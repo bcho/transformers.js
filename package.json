@@ -6,6 +6,7 @@
   "types": "./types/transformers.d.ts",
   "type": "module",
   "scripts": {
+    "prepare": "npm run build",
     "typegen": "tsc ./src/transformers.js --allowJs --declaration --emitDeclarationOnly --declarationMap --outDir types",
     "dev": "webpack serve --no-client-overlay",
     "build": "webpack && npm run typegen",
@@ -38,12 +39,12 @@
   },
   "homepage": "https://github.com/xenova/transformers.js#readme",
   "dependencies": {
-    "onnxruntime-web": "1.14.0",
-    "sharp": "^0.32.0",
-    "@huggingface/jinja": "^0.2.2"
+    "@huggingface/jinja": "^0.2.2",
+    "onnxruntime-web": "1.19.0",
+    "sharp": "^0.32.0"
   },
   "optionalDependencies": {
-    "onnxruntime-node": "1.14.0"
+    "onnxruntime-node": "^1.19.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

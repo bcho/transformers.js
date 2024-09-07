@@ -33,6 +33,7 @@ const DataTypeMap = Object.freeze({
 /**
  * @typedef {keyof typeof DataTypeMap} DataType
  * @typedef {import('./maths.js').AnyTypedArray | any[]} DataArray
+ * @typedef {import('onnxruntime-common').Tensor.DataLocation} DataLocation
  */
 
 const ONNXTensor = ONNX.Tensor;
@@ -45,10 +46,13 @@ export class Tensor {
     type;
 
     /** @type {DataArray} The data stored in the tensor. */
-    data;
+    cpuData;
 
     /** @type {number} The number of elements in the tensor. */
     size;
+
+    /** @type {DataLocation} */
+    dataLocation;
 
     /**
      * Create a new Tensor or copy an existing Tensor.
@@ -87,6 +91,14 @@ export class Tensor {
                 return obj[key] = value;
             }
         });
+    }
+
+    get data() /** @type {DataArray} */ {
+        return this.cpuData;
+    }
+
+    get location() /** @type {DataLocation} */ {
+        return this.dataLocation;
     }
 
     /**
