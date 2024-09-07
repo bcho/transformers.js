@@ -2,6 +2,7 @@
 import { Tensor } from '../src/transformers.js';
 import { compare } from './test_utils.js';
 import { cat, mean, stack, layer_norm } from '../src/utils/tensor.js';
+import { Tensor as ONNXTensor } from 'onnxruntime-web'; 
 
 describe('Tensor operations', () => {
 
@@ -200,4 +201,16 @@ describe('Tensor operations', () => {
             compare(norm, target, 1e-3);
         });
     });
+
+    describe('from ONNXTensor', () => {
+        it('should copy the location parameter', async () => {
+            const onnxTensor = new ONNXTensor(new Float32Array([1, 2, 3, 4, 5, 6]), 'float32', [2, 3]);
+            const onnxTensorLocation = onnxTensor.location;
+
+            const tensor = new Tensor(onnxTensor);
+            const tensorLocation = tensor.location;
+
+            expect(tensorLocation).toBe(onnxTensorLocation);
+        })
+    })
 });
