@@ -2,19 +2,19 @@
 import { Tensor } from '../src/transformers.js';
 import { compare } from './test_utils.js';
 import { cat, mean, stack, layer_norm } from '../src/utils/tensor.js';
-import { Tensor as ONNXTensor } from 'onnxruntime-web'; 
+import { ONNX } from '../src/backends/onnx.js';
 
 describe('Tensor operations', () => {
 
     describe('cat', () => {
 
         it('should concatenate on dim=0', async () => {
-            const t1 = new Tensor('float32', [1, 2, 3], [1, 3]);
-            const t2 = new Tensor('float32', [4, 5, 6, 7, 8, 9], [2, 3]);
-            const t3 = new Tensor('float32', [10, 11, 12], [1, 3]);
+            const t1 = new Tensor('float32', new Float32Array([1, 2, 3]), [1, 3]);
+            const t2 = new Tensor('float32', new Float32Array([4, 5, 6, 7, 8, 9]), [2, 3]);
+            const t3 = new Tensor('float32', new Float32Array([10, 11, 12]), [1, 3]);
 
-            const target1 = new Tensor('float32', [1, 2, 3, 4, 5, 6, 7, 8, 9], [3, 3]);
-            const target2 = new Tensor('float32', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], [4, 3]);
+            const target1 = new Tensor('float32', new Float32Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), [3, 3]);
+            const target2 = new Tensor('float32', new Float32Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]), [4, 3]);
 
             // 2 tensors
             const concatenated1 = cat([t1, t2], 0);
@@ -204,7 +204,7 @@ describe('Tensor operations', () => {
 
     describe('from ONNXTensor', () => {
         it('should copy the location parameter', async () => {
-            const onnxTensor = new ONNXTensor('float32', new Float32Array([1, 2, 3, 4, 5, 6]));
+            const onnxTensor = new ONNX.Tensor('float32', new Float32Array([1, 2, 3, 4, 5, 6]));
             const onnxTensorLocation = onnxTensor.location;
 
             const tensor = new Tensor(onnxTensor);
